@@ -4,4 +4,7 @@ project(fantasy8)
 set(CMAKE_CXX_STANDARD 20)
 
 add_executable(fantasy8 main.cpp
-        chip8_context.hpp)
+        chip8_context.hpp
+        chip8_context.cpp
+        cmake-build-debug/display_console.hpp
+)
