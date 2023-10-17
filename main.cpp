@@ -9,7 +9,10 @@ int main(int argc, char** argv) {
 		chip_8_CPU.load_rom(argv[1]);
 	} else {
 		std::cout << argv[0] << " Too few arguments.\nUsage: fantasy8 file.chip8 (or file.bin etc.)" << std::endl;
+		return 0;
 	}
+
+	chip_8_CPU.execute();
 
 	return 0;
 }

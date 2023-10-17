@@ -1,0 +1,11 @@
+//
+// Created by kayla on 10/17/23.
+//
+
+#ifndef FANTASY8_TARGET_DEFINES_HPP
+#define FANTASY8_TARGET_DEFINES_HPP
+
+#define DISPLAY_WIDTH 64
+#define DISPLAY_HEIGHT 32
+
+#endif //FANTASY8_TARGET_DEFINES_HPP

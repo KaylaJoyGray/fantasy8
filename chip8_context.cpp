@@ -3,6 +3,7 @@
 //
 
 #include "chip8_context.hpp"
+#include "chip8_display.hpp"
 #include <cstdlib>
 #include <fstream>
 #include <iostream>
@@ -147,19 +148,19 @@ namespace chip8 {
 	// Set V[0xF] = collision
 	{
 		V[0xF] = 0;
-		// iterate through each byte of the sprite
+		// iterate through each byte of the sprite (row)
 		for (auto r = 0; r < n; ++r) {
 			// iterate through each bit of each byte
 			for (auto b = 0; b < 8; ++b) {
 
 				std::uint8_t nx = x+b;
-				std::uint8_t ny = y + r;
+				std::uint8_t ny = y+r;
 
 				if (nx > DISPLAY_WIDTH)
-					nx = 0 + (x - DISPLAY_WIDTH);
+					nx = 0 + (nx - DISPLAY_WIDTH);
 
 				if (ny > DISPLAY_HEIGHT)
-					ny = 0 + (y - DISPLAY_HEIGHT);
+					ny = 0 + (ny - DISPLAY_HEIGHT);
 
 				auto sprtbit = ((memory[I + r] >> b) & 0b1);
 				auto dispbit = display_buffer[nx * DISPLAY_WIDTH + ny];
@@ -257,7 +258,7 @@ namespace chip8 {
 				break;
 			}
 
-			memory[i] = byte;
+			memory[i] = static_cast<std::uint8_t>(byte);
 			++ctr;
 		}
 
@@ -270,7 +271,10 @@ namespace chip8 {
 	void Context::unload()
 	// unload a ROM file
 	{
-		// go ahead and clear everything from the font files up // TODO: check this later for corrections
+		// go ahead and clear everything from the font files up for good measure
+		// this includes some of the area "traditionally" reserved for the Chip-8 interpreter,
+		// but there is nothing in there right now besides the font sprites
+		// TODO: check this later for corrections
 		for (auto i = 80; i < 4096; ++i) {
 			memory[i] = 0;
 		}
@@ -404,6 +408,13 @@ namespace chip8 {
 
 		while (true) {
 			parse();
+			chip8::display(display_buffer);
 		}
+	}
+
+	const std::bitset<DISPLAY_WIDTH*DISPLAY_HEIGHT> &Context::get_display_buffer() const
+	// getter for the display buffer
+	{
+		return display_buffer;
 	}
 }

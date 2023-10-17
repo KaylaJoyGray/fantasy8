@@ -5,11 +5,9 @@
 #ifndef FANTASY8_CHIP8_CONTEXT_HPP
 #define FANTASY8_CHIP8_CONTEXT_HPP
 
+#include "target_defines.hpp"
 #include <cstdint>
 #include <bitset>
-
-#define DISPLAY_WIDTH 64
-#define DISPLAY_HEIGHT 32
 
 namespace chip8 {
 
@@ -56,7 +54,8 @@ namespace chip8 {
 			// Peripherals
 			bool keyboard[16] = {};
 			std::bitset<DISPLAY_WIDTH*DISPLAY_HEIGHT> display_buffer;
-		public:
+	public:
+
 			// ROM loading
 			void load_rom(const char *file);
 			void unload();
@@ -66,6 +65,9 @@ namespace chip8 {
 
 			// parse the next instruction
 			void parse();
+
+			// get display buffer
+			const std::bitset<DISPLAY_WIDTH*DISPLAY_HEIGHT> &get_display_buffer() const;
 
 			// Instructions //
 			// Exposed as member functions for testing purposes
