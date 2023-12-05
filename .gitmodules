@@ -1,0 +1,3 @@
+[submodule "EasyGFX"]
+	path = EasyGFX
+	url = git@github.com-EasyGFX:KaylaJoyGray/EasyGFX.git
