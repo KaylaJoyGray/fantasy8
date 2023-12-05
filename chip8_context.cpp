@@ -64,7 +64,7 @@ namespace chip8 {
 	void Context::ADD(std::uint8_t &a, std::uint8_t b)
 	// Set a to a+b with overflow
 	{
-		if ((a + b) > 255) {
+		if (static_cast<std::uint16_t>(a + b) > 255) {
 			V[0x0F] = 1;
 		} else {
 			V[0x0F] = 0;
@@ -134,7 +134,7 @@ namespace chip8 {
 	void Context::LDI(std::uint16_t a)
 	// Load a into I
 	{
-		I = a;
+		I = a & 0x0FFF;
 	}
 
 	void Context::RND(std::uint8_t &a, std::uint8_t b)
@@ -153,8 +153,8 @@ namespace chip8 {
 			// iterate through each bit of each byte
 			for (auto b = 0; b < 8; ++b) {
 
-				std::uint8_t nx = x+b;
-				std::uint8_t ny = y+r;
+				std::uint16_t nx = x+b;
+				std::uint16_t ny = y+r;
 
 				if (nx > DISPLAY_WIDTH)
 					nx = 0 + (nx - DISPLAY_WIDTH);
@@ -162,13 +162,13 @@ namespace chip8 {
 				if (ny > DISPLAY_HEIGHT)
 					ny = 0 + (ny - DISPLAY_HEIGHT);
 
-				auto sprtbit = ((memory[I + r] >> b) & 0b1);
-				auto dispbit = display_buffer[nx * DISPLAY_WIDTH + ny];
+				auto sprtbit = ((memory[I + r] >> (8-b)) & 0b01);
+				auto dispbit = display_buffer[ny * DISPLAY_WIDTH + nx];
 
 				if (sprtbit && dispbit)
 					V[0xF] = 1;
 
-				display_buffer[nx * DISPLAY_WIDTH + ny] = dispbit ^ sprtbit;
+				display_buffer[ny * DISPLAY_WIDTH + nx] = dispbit ^ sprtbit;
 			}
 		}
 	}
@@ -409,6 +409,7 @@ namespace chip8 {
 		while (true) {
 			parse();
 			chip8::display(display_buffer);
+			PC += 2;
 		}
 	}
 

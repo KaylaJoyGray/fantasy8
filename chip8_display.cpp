@@ -15,10 +15,11 @@ namespace chip8 {
 		for (auto y = 0; y < DISPLAY_HEIGHT; ++y) {
 
 			for (auto x = 0; x < DISPLAY_WIDTH; ++x) {
-				if (display_buffer[x*DISPLAY_WIDTH+y] == 1) {
-					std::cout << 1;
+
+				if (display_buffer[y*DISPLAY_WIDTH+x]) {
+					std::cout << "\u2591\u2591";
 				} else {
-					std::cout << 0;
+					std::cout << "  ";
 				}
 			}
 			std::cout << std::endl;

@@ -13,7 +13,7 @@ namespace chip8 {
 
 	class Context {
 		private:
-			bool ldflag = false;
+			bool ldflag = false; // TODO: CHANGE TO FALSE AFTER DEBUG
 
 			std::uint16_t PC = 0x200;   // Program Counter, stores the currently executing address
 			// Most Chip-8 programs start here
